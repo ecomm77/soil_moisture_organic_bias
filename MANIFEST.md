@@ -32,6 +32,7 @@ Curated code and source-data package for the GRSL letter on ISMN sensor-family c
 - `figures/supplement/`: supplement figure files, including the real 2021 temporal validation figure.
 - `manuscript_snapshot/`: GRSL TeX/PDF snapshot.
 - `docs/`: original download strategy and downstream metric notes.
+- `docs/ZENODO_ACTIVATION_CHECKLIST.md`: final DOI-publication checklist.
 - `outputs/`: rebuilt outputs produced by the portable script.
 
 ## Required verification commands
