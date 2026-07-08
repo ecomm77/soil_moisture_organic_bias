@@ -1,0 +1,30 @@
+{
+  "title": "GRSL sensor-family validation code package",
+  "upload_type": "dataset",
+  "description": "Curated review package for a GRSL letter quantifying how ISMN sensor-family composition changes apparent bias and RMSD of ERA5-Land, SMAP L3_E, and SMAP-SMI soil-moisture products. The package includes manuscript snapshots, figure files, small source-data CSVs, runnable summary plotting code, and legacy project scripts for provenance. Public DOI activation is pending; update the package metadata after the Zenodo record is published.",
+  "creators": [
+    {
+      "name": "Park, Chang-Hwan",
+      "affiliation": "Ajou University"
+    }
+  ],
+  "version": "v20260708",
+  "publication_date": "2026-07-08",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/ecomm77/soil_moisture_organic_bias",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ],
+  "keywords": [
+    "soil moisture",
+    "ISMN",
+    "SMAP",
+    "ERA5-Land",
+    "sensor-family bias",
+    "validation",
+    "remote sensing"
+  ],
+  "license": "other-open"
+}

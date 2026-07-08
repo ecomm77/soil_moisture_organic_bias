@@ -1,0 +1,2 @@
+test,n_total,n_hydraprobe,n_nonhydraprobe,hydraprobe_residual_mean_m3m3,nonhydraprobe_residual_mean_m3m3,contrast_hydraprobe_minus_nonhydraprobe_m3m3,ci_network_low_m3m3,ci_network_high_m3m3,ci_site_low_m3m3,ci_site_high_m3m3,ci_archive_low_m3m3,ci_archive_high_m3m3,welch_t,p_value,robustness_note
+pooled_CRNS_ISMN_family_contrast,92,58,34,0.111,-0.044,0.155,0.042,0.244,0.074,0.250,0.048,0.209,4.07,0.00023,"Leave-one-archive and leave-one-network deletions preserve p<0.001; network/site/archive-clustered bootstrap CIs exclude zero"

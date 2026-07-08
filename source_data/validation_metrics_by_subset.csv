@@ -1,0 +1,5 @@
+reference,full_RMSD,full_N,hydraprobe_RMSD,hydraprobe_N,non_hydraprobe_RMSD,non_hydraprobe_N,full_bias,hydraprobe_bias,non_hydraprobe_bias
+ERA5-Land,0.1493,1559,0.1467,1231,0.1587,328,-0.0809,-0.0973,-0.0192
+SMAP L3_E,0.1249,865,0.1220,626,0.1323,239,-0.0163,-0.0254,0.0076
+SMAP-SMI,0.1093,1573,0.0989,1228,0.1401,345,-0.0364,-0.0372,-0.0336
+

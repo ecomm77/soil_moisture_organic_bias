@@ -1,0 +1,453 @@
+% !TEX program = pdflatex
+% !TEX root = paper2_GRSL_letter.tex
+%% =====================================================================
+%% IEEE GEOSCIENCE AND REMOTE SENSING LETTERS (GRSL) – 5-page letter
+%% "Sensor-family composition of the in-situ archive changes the
+%%  apparent bias and RMSD of satellite soil-moisture products."
+%%
+%% This version is reframed as a SATELLITE-VALIDATION letter (not an
+%% in-situ sensor paper), per GRSL scope: in-situ material must serve a
+%% remote-sensing result. Key design choices:
+%%   * Fig. 2 is the PRODUCT-LEVEL consequence (bias/RMSD stratification
+%%     of ERA5-Land, SMAP L3_E, SMAP-SMI). This is the central result.
+%%   * The CRNS attribution and the full family-composition table are
+%%     demoted to the Supplement (Fig. S1, Table S1); only the pooled,
+%%     clustered CRNS contrast stays in the main text.
+%%   * SMAP L3_E / SMAP-SMI processing and the mean-state scope of the
+%%     metrics are stated explicitly.
+%%   * Claim level softened to "sensor-family-structured residual";
+%%     the central claim is "the ISMN benchmark is not sensor-family
+%%     neutral," not a laboratory calibration proof.
+%%   * Compile with pdflatex (self-contained thebibliography).
+%%     Uses IEEEtran.cls (bundled on Overleaf / IEEE author kit).
+%% =====================================================================
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{%
+  {paper2_GRSL_code_package_20260708/figures/main/}%
+  {paper2_GRSL_code_package_20260708/figures/supplement/}%
+  {figures/main/}{figures/supplement/}%
+  {../figures/main/}{../figures/supplement/}}
+
+\begin{document}
+
+\title{Sensor-Family Composition of the In-Situ Archive Changes the
+Apparent Bias and RMSD of Satellite Soil-Moisture Products}
+
+\author{Chang-Hwan~Park%
+\thanks{Manuscript submitted July 8, 2026. \emph{(Corresponding author:
+Chang-Hwan Park.)}}%
+\thanks{This work was supported by Institute of Information \&
+communications Technology Planning \& Evaluation (IITP) under the
+Artificial Intelligence Convergence Innovation Human Resources
+Development (\mbox{IITP-2026-RS-2023-00255968}) grant funded by the Korea
+government(MSIT)}%
+\thanks{C.-H. Park is with the Department of Civil Systems Engineering,
+Ajou University, Suwon, Republic of Korea (e-mail: cpark@ajou.ac.kr).}%
+\thanks{Processing scripts and derived station-reference and CRNS-ISMN
+matchup summary tables are included in the
+accompanying review package (v20260708); a public Zenodo DOI and
+source-code mirror should be activated before final submission.}}
+
+\markboth{IEEE Geoscience and Remote Sensing Letters}%
+{Park: Sensor-Family Composition
+Changes Satellite Soil-Moisture Validation Metrics}
+
+\maketitle
+
+\begin{abstract}
+Global satellite and reanalysis soil-moisture products are commonly
+validated against the International Soil Moisture Network (ISMN), whose
+reference-error structure is often treated as independent of sensor
+manufacturer. This letter quantifies how that composition assumption
+affects reported product metrics. Across 1{,}625 ISMN station-sensors
+(2020–2023), $78.4\,\%$ belong to one dielectric family (Stevens
+HydraProbe), whose mean residual is drier than the references while
+Decagon/METER TDR records are wetter—a $0.17$~m$^3$\,m$^{-3}$ family
+swing that exceeds the ERA5-Land/SMAP~L3\_E/SMAP-SMI disagreement.
+Propagated into product metrics, the mean-state bias correction inferred
+from ISMN changes by a factor of five for ERA5-Land and changes sign for
+SMAP~L3\_E depending on which sensor family is used, and the SMAP-SMI
+mean-state RMSD increases by $41\,\%$ on the non-HydraProbe subsample. A
+geography-controlled paired-sensor test and a dielectric-independent
+cosmic-ray-neutron cross-check, including a USA-excluded sensitivity,
+indicate that the residual structure is associated with sensor family
+after geography and network checks. A 2021 overpass-matched SMAP
+temporal check also shows family structure in ubRMSE and temporal
+correlation metrics.
+ISMN-based validation metrics should be reported with sensor-family
+stratification or reweighting.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Soil moisture, validation, SMAP, ERA5-Land, ISMN, in-situ reference,
+sensor bias, cosmic-ray neutron sensor.
+\end{IEEEkeywords}
+
+\IEEEpeerreviewmaketitle
+
+\section{Introduction}
+\IEEEPARstart{T}{he} quantitative skill of every global satellite
+soil-moisture retrieval and reanalysis product is reported as a
+validation statistic—a network-mean bias, RMSD, or correlation—
+computed against in-situ observations. In practice this reference is
+supplied almost exclusively by the International Soil Moisture Network
+(ISMN)~\cite{Dorigo2021}, which aggregates more than twenty national
+and regional networks into a common reference archive and is used
+downstream to quote a single number per candidate product, including
+for SMAP~\cite{ONeill2021,ChanSMAP2018} and ERA5-Land
+\cite{MunozSabater2021}. Community validation protocols emphasize
+site representativeness, error characterization, and transparent
+reporting of bias, ubRMSE, and correlation metrics
+\cite{Colliander2017,Gruber2020}.
+
+Aggregating the archive this way implicitly assumes that its error
+model is \emph{manufacturer-neutral}: that the reference is
+instrument-blind, so a product can be scored without regard to the
+particular sensors that happen to populate the archive. That
+assumption need not hold. Dielectric soil-moisture sensors from
+different vendors operate at different frequencies (e.g., $50$~MHz for
+the Stevens HydraProbe~\cite{Seyfried2004}) and use different
+calibration curves. If the archive is dominated by one family and that
+family carries a systematic near-surface offset, the offset does not
+average out—it is inherited by the validation benchmark of every
+product scored against the archive.
+
+This letter evaluates that assumption as a remote-sensing validation
+question: \emph{how much do the reported bias and RMSD of ERA5-Land,
+SMAP~L3\_E, and the SMAP-derived SMI product change when the ISMN
+reference is stratified by sensor-manufacturer family?} The analysis
+quantifies the product-level sensitivity directly, controls for
+deployment geography with co-located sensor pairs and network-clustered
+inference, and adds a dielectric-independent cosmic-ray-neutron (CRNS)
+cross-check. The inference is not a laboratory calibration claim; it is
+a validation-methodology result showing that the ISMN benchmark is not
+sensor-family neutral for these mean-state product metrics.
+
+\section{Data and Methods}
+
+\subsection{ISMN extraction and family assignment}
+All \texttt{*\_sm\_*.stm} files in the ISMN archive used here
+(31{,}201 files, 2015–2023) were parsed; we retained records dated
+entirely in 2020–2023 with nominal depth-from $\le 0.15$~m and
+$>180$ valid hourly observations per year, giving 1{,}625 unique
+(network, station, sensor, depth) records across 23 networks on all
+continents. Each sensor string was matched to a manufacturer family
+(HydraProbe family, Decagon/METER TDR, Campbell CS6xx, ThetaProbe,
+TRIME, other); strings containing \texttt{hydraprobe} or
+\texttt{stevens} form one HydraProbe family (the same Stevens Water
+Monitoring 50~MHz probe under several model numbers). The full
+composition is given in Supplement Table~S1.
+
+\subsection{Reference products and processing}
+For each product we sampled each station by nearest valid cell and
+formed the residual $(\mathrm{ISMN}-\mathrm{reference})$.
+\emph{ERA5-Land}~\cite{MunozSabater2021}: layer-1 (0–7~cm) volumetric
+soil water, per-cell temporal mean over 2020–2023 at $0.1^\circ$.
+\emph{SMAP~L3\_E}~\cite{ONeill2021}: SPL3SMP\_E v006; the analysis used
+182 available days from 2023, combining ascending and descending passes
+and retaining only recommended-quality retrievals (retrieval-quality
+flag) into a $9$-km EASE-Grid mean field, with a $0.15^\circ$ cell
+rejection radius. \emph{SMAP-SMI}~\cite{Zeng2025SMI}: $0.1^\circ$
+product, native 2020–2023, on a stratified 192-day sample. A
+temporal-window control (2020–2023 vs.\ 2023-only ERA5-Land) leaves
+the family ordering and the HydraProbe-family dry residual unchanged
+(family change $\le\!0.012$~m$^3$\,m$^{-3}$; Supplement).
+
+\emph{Scope of the metrics.} These are \emph{mean-state} validation
+metrics—the bias and RMSD of multi-year mean fields—not
+overpass-matched ubRMSE or anomaly correlation~\cite{Entekhabi2010,DraperDAS2012}.
+This is the quantity represented by a single network-mean number per
+product. To connect the result to standard Cal/Val language, we also
+report a 2021 overpass-matched SMAP~L3 SM\_P temporal check in the
+Supplement.
+
+\subsection{Attribution and confounding controls}
+Because HydraProbe-heavy networks (SCAN, SNOTEL, USCRN) also occupy
+particular climates and soils, sensor family and deployment geography
+are correlated. We separate them three ways. (i)~\emph{Co-located
+pairs}: stations hosting both a HydraProbe-family and a non-HydraProbe
+sensor in the same ISMN grid cell ($n=21$), compared with a paired
+$t$-test; both members lie in the retained near-surface layer
+(depth-from $\le0.15$~m), and the corresponding depth constraint is
+described in the Supplement. (ii)~\emph{Network-clustered
+inference}: a cluster bootstrap (5{,}000 resamples) that resamples ISMN
+networks as the sampling unit, plus leave-one-network deletion, used as
+the primary uncertainty rather than na\"ive per-station bootstrap.
+(iii)~\emph{Dielectric-independent cross-check}: because product
+residuals alone cannot separate an in-situ sensor effect from
+product-specific error, we add a CRNS reference whose neutron signal is
+independent of soil permittivity~\cite{Zreda2012}. Four archives
+(COSMOS-USA~\cite{ZhengHESS2024}, COSMOS-Europe
+\cite{BogenaCOSMOSEurope2022}, COSMOS-UK~\cite{Cooper2021COSMOSUK},
+CosmOz Australia~\cite{Hawdon2014CosmOz}) were matched to ISMN within
+$0.1^\circ$–$0.5^\circ$. For COSMOS-USA, the CRNS$-$ISMN residual is
+assembled as the Zheng et al. CRNS$-$ERA5-Land bias minus the
+station-matched ISMN$-$ERA5-Land residual from our $0.1^\circ$ overlay;
+the non-USA archives use direct CRNS$-$probe or local matchup contrasts.
+The pooled HydraProbe-minus-non-HydraProbe contrast and its clustered
+bootstrap are reported here, with archive-level detail and a
+USA-excluded sensitivity in the Supplement.
+
+\section{Results}
+
+\subsection{The validation archive is manufacturer-asymmetric}
+Of the 1{,}625 station-sensors, 1{,}274 ($78.4\,\%$) are
+HydraProbe-family; all other families combined are $<\!22\,\%$. Within
+the same retained archive, the family mean residual against ERA5-Land is
+$-0.097$~m$^3$\,m$^{-3}$ for HydraProbe-family station-sensors but
+$+0.068$~m$^3$\,m$^{-3}$ for Decagon/METER TDR (Fig.~\ref{fig:asymmetry}).
+Thus the validation archive is not only manufacturer-asymmetric in its
+counts; it also contains family-structured mean-state residuals. A
+single archive-mean validation number is therefore influenced by which
+families and sub-networks dominate the retained ISMN sample.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{paper_fig3_AB.png}
+\caption{The ISMN validation archive is manufacturer-asymmetric.
+(a)~Retained 2020–2023 near-surface ISMN station-sensors by
+manufacturer family. HydraProbe-family records supply $78.4\,\%$ of the
+archive. (b)~Mean ISMN$-$ERA5-Land residual by family; residual-panel
+counts reflect valid ERA5-Land overlay coverage, and TRIME is omitted
+because $n=2$. The HydraProbe-to-Decagon/METER contrast is
+$0.17$~m$^3$\,m$^{-3}$, so archive composition can change a reported
+product bias even before any retrieval algorithm changes.}
+\label{fig:asymmetry}
+\end{figure*}
+
+\subsection{Product validation metrics depend on sensor-family
+composition}
+Stratifying the ISMN reference by family changes the validation
+statistics of all three products (Fig.~\ref{fig:downstream}). The mean
+residual swings from $-0.097$~m$^3$\,m$^{-3}$ for the HydraProbe family
+to $+0.068$~m$^3$\,m$^{-3}$ for Decagon/METER TDR against ERA5-Land
+(a $0.17$~m$^3$\,m$^{-3}$ swing, larger than the between-product
+disagreement). Propagated into commonly reported validation metrics:
+the ISMN-implied ERA5-Land mean-state bias correction is $-0.081$ over
+the full archive, $-0.097$ on the HydraProbe subsample, and $-0.019$ on
+the non-HydraProbe subsample—a factor-of-five change in amplitude.
+For SMAP~L3\_E the same triple is $-0.016/-0.025/+0.008$: the inferred
+correction \emph{flips sign}, so whether SMAP reads wetter or drier than
+the in-situ reference depends on sensor-family composition. The mean-state
+RMSD is likewise composition-dependent; for SMAP-SMI it rises from
+$0.099$ (HydraProbe subsample) to $0.140$~m$^3$\,m$^{-3}$
+(non-HydraProbe subsample), a $41\,\%$ inflation. Because HydraProbe
+dominates the archive roughly three-to-one, the full-archive number is
+weighted toward the HydraProbe-family subset.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{downstream_figure.png}
+\caption{Sensor-family composition changes satellite-product
+validation metrics. (a)~Mean-state ISMN$-$reference residual by family
+for ERA5-Land, SMAP~L3\_E, and SMAP-SMI; the HydraProbe$-$Decagon/METER
+swing ($\approx\!0.17$~m$^3$\,m$^{-3}$) exceeds the between-product
+disagreement. (b)~Mean-state RMSD for each product under
+the full archive and the HydraProbe-only and non-HydraProbe-only
+subsamples; the SMAP-SMI RMSD inflates $41\,\%$ on the non-HydraProbe
+subsample. (c)~Implied ISMN$-$reference bias correction by subsample;
+the ERA5-Land amplitude changes by $\sim\!5\times$ and the SMAP~L3\_E
+correction changes sign. (d)~Independent family-contrast checks:
+co-located pairs give a non-HydraProbe-minus-HydraProbe difference of
+$+0.075$~m$^3$\,m$^{-3}$ $[+0.031,+0.119]$, and the CRNS cross-check
+gives a HydraProbe-minus-non-HydraProbe contrast of
+$+0.155$~m$^3$\,m$^{-3}$ $[+0.042,+0.244]$ under network-cluster
+bootstrap; site- and archive-cluster CIs also exclude zero. This is the
+practical consequence for satellite soil-moisture validation and is
+independent of the sensor-versus-deployment attribution.}
+\label{fig:downstream}
+\end{figure*}
+
+Equal-weighting the HydraProbe and non-HydraProbe subsets changes the
+ERA5-Land mean residual from $-0.081$ to $-0.058$~m$^3$\,m$^{-3}$ and
+the SMAP~L3\_E residual from $-0.016$ to $-0.009$~m$^3$\,m$^{-3}$.
+Equal weighting across the five non-TRIME families gives
+$-0.038$~m$^3$\,m$^{-3}$ for ERA5-Land and $+0.001$~m$^3$\,m$^{-3}$ for
+SMAP~L3\_E, illustrating how a simple reweighting protocol converts the
+diagnostic into an actionable reporting rule. The two primary
+independent checks remain significant after Holm correction
+($p_{\mathrm{Holm}}=4.6\times10^{-4}$ for CRNS and
+$4.7\times10^{-3}$ for co-located pairs).
+
+\subsection{Overpass-matched temporal check}
+A real 2021 SMAP~L3 SM\_P (AM) overpass-matched check adds the Cal/Val
+metrics that the mean-state analysis intentionally does not target
+(Supplement Table~S3, Fig.~S2). Across 785 station-sensors and 78{,}600
+matched station-days, the pooled HydraProbe versus non-HydraProbe bias
+contrast is small but significant ($-0.032$ versus
+$-0.036$~m$^3$\,m$^{-3}$; $p=9.8\times10^{-3}$) because the
+non-HydraProbe bin mixes wetter Decagon/METER TDR records
+($+0.058$~m$^3$\,m$^{-3}$) with drier Campbell and other records
+($-0.107$ and $-0.071$~m$^3$\,m$^{-3}$). The headline family pair
+therefore remains aligned with the mean-state result: HydraProbe is
+drier than Decagon/METER by $0.090$~m$^3$\,m$^{-3}$, and Decagon/METER
+also has higher Pearson $R$ ($0.622$ versus $0.317$) and anomaly $R$
+($0.423$ versus $0.329$). Pooled ubRMSE differs ($0.062$ versus
+$0.057$~m$^3$\,m$^{-3}$; $p=8.2\times10^{-4}$), while pooled Pearson
+$R$ does not ($p=0.70$) and pooled anomaly $R$ is marginal ($p=0.055$).
+This single-year diagnostic does not replace a full multi-product
+temporal validation, but it shows that family structure is visible in
+standard satellite-validation metrics as well as in mean-state
+bias/RMSD.
+
+\subsection{The family residual is robust to geography and network checks}
+Two controls address whether the effect reflects deployment geography.
+At the $n=21$ co-located pairs—which hold location, climate, season,
+and soil constant—the non-HydraProbe sensor reads wetter by
+$+0.075$~m$^3$\,m$^{-3}$ (paired $t=+3.19$, $p=4.7\times10^{-3}$; CI
+$[+0.031,+0.119]$). Under network-clustered resampling the
+HydraProbe-family residual remains negative and its CI excludes zero,
+and every leave-one-network deletion preserves the effect
+($p<10^{-3}$). The supported interpretation is therefore limited but
+specific: the residuals remain sensor-family structured after
+network-level robustness checks.
+
+\subsection{Dielectric-independent CRNS cross-check}
+Pooling the 92 CRNS$\leftrightarrow$ISMN pairs that permit a
+within-archive family contrast (58 HydraProbe, 34 non-HydraProbe), the
+dielectric-free neutron reference sits closer to the non-HydraProbe
+families: mean HydraProbe residual $+0.111$ versus non-HydraProbe
+$-0.044$~m$^3$\,m$^{-3}$ (Welch's $t=+4.07$, $p=2.3\times10^{-4}$). The
+contrast survives every leave-one-archive deletion ($p<10^{-3}$), every
+leave-one-network deletion ($p<10^{-3}$), and a cluster bootstrap whose
+CIs exclude zero under network, CRNS-site, and archive clustering. The
+COSMOS-USA component is the synthesized CRNS$-$ERA5 minus ISMN$-$ERA5
+residual described above; when COSMOS-USA is removed, the remaining
+archives still preserve the contrast ($t=+3.91$,
+$p=6.3\times10^{-4}$). The Australian archive ($n=5$) is directionally
+consistent but too small for an independent test. Per-archive results
+are given in Supplement Fig.~S1; the cross-check adds a
+permittivity-independent line of evidence for the same family ordering
+seen in Fig.~\ref{fig:downstream}.
+
+\section{Discussion and Conclusion}
+The global ISMN benchmark is dominated by a single dielectric family,
+and the in-situ$-$reference residual is sensor-family structured. The
+consequence for remote sensing is direct and does not
+require resolving whether the offset is a calibration effect or a
+deployment effect: because the HydraProbe-family dry residual is not
+distributed symmetrically across the archive, the mean-state bias and
+RMSD reported for ERA5-Land, SMAP~L3\_E, and SMAP-SMI depend
+on which sensor family populates the reference—to the point of
+reversing the sign of an inferred SMAP correction. Manufacturer
+neutrality of the ISMN benchmark is therefore not a safe assumption for
+these mean-state metrics.
+
+These results support treating sensor family as an explicit
+stratification, fixed-effect, or reweighting term in ISMN-based
+validation, with global product skill reported by family or on a
+family-balanced subsample; even equal HydraProbe/non-HydraProbe
+weighting materially changes the reported ERA5-Land and SMAP~L3\_E
+mean residuals. Two limitations bound the claim. First, the primary
+metrics are mean-state summaries, although a real 2021 SMAP temporal
+check shows family structure in ubRMSE and anomaly $R$ as well. Second,
+the attribution, although supported by a geography-controlled pair test
+and a dielectric-independent CRNS cross-check, remains a
+residual-structure result rather than a laboratory calibration proof. A
+sensitivity analysis controlling for SoilGrids~2.0 clay fraction and
+bulk density~\cite{Poggio2021} yields the same family ordering,
+indicating that the effect is not explained by soil texture alone.
+
+\section*{Acknowledgment}
+The author thanks the ISMN, COSMOS-Europe, COSMOS-UK, CosmOz, and NASA
+NSIDC data providers.
+
+\begin{thebibliography}{16}
+
+\bibitem{Dorigo2021}
+W.~Dorigo \emph{et al.}, "The International Soil Moisture Network:
+serving Earth system science for over a decade," \emph{Hydrol. Earth
+Syst. Sci.}, vol.~25, pp.~5749–5804, 2021,
+doi:10.5194/hess-25-5749-2021.
+
+\bibitem{Gruber2020}
+A.~Gruber \emph{et al.}, "Validation practices for satellite soil
+moisture retrievals: What are (the) errors?" \emph{Remote Sens.
+Environ.}, vol.~244, Art.~111806, 2020,
+doi:10.1016/j.rse.2020.111806.
+
+\bibitem{MunozSabater2021}
+J.~Mu\~{n}oz-Sabater \emph{et al.}, "ERA5-Land: a state-of-the-art
+global reanalysis dataset for land applications," \emph{Earth Syst.
+Sci. Data}, vol.~13, pp.~4349–4383, 2021,
+doi:10.5194/essd-13-4349-2021.
+
+\bibitem{ONeill2021}
+P.~E.~O'Neill \emph{et al.}, "SMAP Enhanced L3 Radiometer Global and
+Polar Grid Daily 9~km EASE-Grid Soil Moisture, Version~6," NASA NSIDC
+DAAC, 2021, doi:10.5067/M20OXIZHY3RJ.
+
+\bibitem{ChanSMAP2018}
+S.~K.~Chan \emph{et al.}, "Development and assessment of the SMAP
+enhanced passive soil moisture product," \emph{Remote Sens.
+Environ.}, vol.~204, pp.~931–941, 2018,
+doi:10.1016/j.rse.2017.08.025.
+
+\bibitem{Colliander2017}
+A.~Colliander \emph{et al.}, "Validation of SMAP surface soil moisture
+products with core validation sites," \emph{Remote Sens. Environ.},
+vol.~191, pp.~215–231, 2017, doi:10.1016/j.rse.2017.01.021.
+
+\bibitem{Entekhabi2010}
+D.~Entekhabi \emph{et al.}, "The Soil Moisture Active Passive (SMAP)
+mission," \emph{Proc. IEEE}, vol.~98, pp.~704–716, 2010,
+doi:10.1109/JPROC.2010.2043918.
+
+\bibitem{DraperDAS2012}
+C.~S.~Draper, R.~H.~Reichle, G.~J.~M. De Lannoy, and Q.~Liu,
+"Assimilation of passive and active microwave soil moisture
+retrievals," \emph{Geophys. Res. Lett.}, vol.~39, Art.~L04401, 2012,
+doi:10.1029/2011GL050655.
+
+\bibitem{Zeng2025SMI}
+J.~Zeng, P.~Wang, H.~Ma, P.~Shi, and C.~Zhang, "Global daily soil
+moisture products at $0.1^\circ$ and $0.25^\circ$," Aerosp. Inf. Res.
+Inst., CAS, Zenodo record 15015557, 2025,
+doi:10.5281/zenodo.15015557.
+
+\bibitem{Seyfried2004}
+M.~S.~Seyfried and M.~D.~Murdock, "Measurement of soil water content
+with a 50-MHz soil dielectric sensor," \emph{Soil Sci. Soc. Am. J.},
+vol.~68, pp.~394–403, 2004, doi:10.2136/sssaj2004.3940.
+
+\bibitem{Zreda2012}
+M.~Zreda \emph{et al.}, "COSMOS: the COsmic-ray Soil Moisture
+Observing System," \emph{Hydrol. Earth Syst. Sci.}, vol.~16,
+pp.~4079–4099, 2012, doi:10.5194/hess-16-4079-2012.
+
+\bibitem{BogenaCOSMOSEurope2022}
+H.~R.~Bogena \emph{et al.}, "COSMOS-Europe: a European network of
+cosmic-ray neutron soil moisture sensors," \emph{Earth Syst. Sci.
+Data}, vol.~14, pp.~1125–1151, 2022,
+doi:10.5194/essd-14-1125-2022.
+
+\bibitem{Cooper2021COSMOSUK}
+H.~M.~Cooper \emph{et al.}, "Soil moisture estimates from the UK
+COSMOS-UK network," \emph{Earth Syst. Sci. Data}, vol.~13,
+pp.~1737–1757, 2021, doi:10.5194/essd-13-1737-2021.
+
+\bibitem{Hawdon2014CosmOz}
+A.~Hawdon, D.~McJannet, and J.~Wallace, "Calibration and correction
+procedures for cosmic-ray neutron soil moisture probes located across
+Australia," \emph{Water Resour. Res.}, vol.~50, pp.~5029–5043, 2014,
+doi:10.1002/2013WR015138.
+
+\bibitem{ZhengHESS2024}
+Y.~Zheng \emph{et al.}, "Evaluation of reanalysis soil moisture
+products using cosmic ray neutron sensor observations across the
+globe," \emph{Hydrol. Earth Syst. Sci.}, vol.~28, pp.~1999–2022,
+2024, doi:10.5194/hess-28-1999-2024.
+
+\bibitem{Poggio2021}
+L.~Poggio \emph{et al.}, "SoilGrids 2.0: producing soil information
+for the globe with quantified spatial uncertainty," \emph{SOIL},
+vol.~7, pp.~217–240, 2021, doi:10.5194/soil-7-217-2021.
+
+\end{thebibliography}
+
+\end{document}

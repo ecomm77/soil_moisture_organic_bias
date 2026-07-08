@@ -1,0 +1,11 @@
+ismn_subset,reference,n,mean_ISMN_minus_ref
+full_ISMN,ERA5-Land,1559,-0.0809
+full_ISMN,SMAP L3_E,865,-0.0163
+full_ISMN,SMAP-SMI,1573,-0.0364
+HydraProbe_only,ERA5-Land,1231,-0.0973
+HydraProbe_only,SMAP L3_E,626,-0.0254
+HydraProbe_only,SMAP-SMI,1228,-0.0372
+non_HydraProbe,ERA5-Land,328,-0.0192
+non_HydraProbe,SMAP L3_E,239,0.0076
+non_HydraProbe,SMAP-SMI,345,-0.0336
+

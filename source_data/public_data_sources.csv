@@ -1,0 +1,11 @@
+source,role,access_or_identifier,notes
+ISMN,station-sensor in-situ soil-moisture archive,https://ismn.earth/,Near-surface 2020-2023 station-sensor records retained after parsing
+ERA5-Land,reanalysis reference product,Copernicus Climate Data Store; Munoz-Sabater et al. 2021,Layer-1 0-7 cm volumetric soil water
+SMAP L3_E,satellite product reference,NASA NSIDC SPL3SMP_E v006; ONeill et al. 2021,2023 available-day mean field used in the letter
+SMAP-SMI,satellite-derived product reference,Zenodo record 15015557,Global daily soil-moisture product from Zeng et al. 2025
+SoilGrids 2.0,soil texture/bulk-density sensitivity covariates,https://files.isric.org/soilgrids/latest/data/,Used for texture and bulk-density sensitivity checks
+COSMOS-Europe,CRNS cross-check,Bogena et al. 2022 DOI 10.34731/x9s3-kr48,Dielectric-independent soil-moisture reference
+COSMOS-UK,CRNS cross-check,Cooper et al. 2021 DOI 10.5285/2dce161d-2fab-47bb-9fe6-38e7ed1ae18a,Dielectric-independent soil-moisture reference
+CosmOz,CRNS cross-check,TERN-hosted REST API DOI 10.25901/5e7ab81af0394,Dielectric-independent soil-moisture reference
+COSMOS-USA,CRNS cross-check,Zheng et al. 2024 HESS supplement DOI 10.5194/hess-28-1999-2024,Reprocessed per-station bias table
+

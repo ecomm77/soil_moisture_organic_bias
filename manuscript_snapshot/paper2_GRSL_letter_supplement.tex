@@ -1,0 +1,268 @@
+% !TEX program = pdflatex
+% !TEX root = paper2_GRSL_letter_supplement.tex
+%% =====================================================================
+%% SUPPLEMENT to the GRSL letter
+%% "Sensor-Family Composition of the In-Situ Archive Changes the
+%%  Apparent Bias and RMSD of Satellite Soil-Moisture Products"
+%%
+%% Supplementary analyses for the 5-page main letter:
+%%   Table S1  full family composition + per-reference residual CIs
+%%   Fig. S1   per-archive dielectric-free CRNS attribution
+%%   Table S2  near-surface paired-sensor test
+%%   Table S3/Fig. S2 real 2021 SMAP temporal validation check
+%%   Sec. S4   temporal-window invariance (ERA5 2020-23 vs 2023-only)
+%%   Sec. S5   soil-texture control (clay/bulk-density mixed model)
+%% =====================================================================
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{url}
+\setlength{\emergencystretch}{3em}
+
+\graphicspath{%
+  {paper2_GRSL_code_package_20260708/figures/main/}%
+  {paper2_GRSL_code_package_20260708/figures/supplement/}%
+  {figures/main/}{figures/supplement/}%
+  {../figures/main/}{../figures/supplement/}}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thesection}{S\arabic{section}}
+
+\title{Supplementary Material\\
+\large Sensor-Family Composition of the In-Situ Archive Changes the
+Apparent Bias and RMSD of Satellite Soil-Moisture Products}
+\author{Chang-Hwan Park}
+\date{July 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Archive composition and per-reference residuals}
+Table~\ref{tab:S1} gives the full manufacturer-family composition of the
+retained 2020–2023 ISMN archive and the mean ISMN$-$reference residual
+for each family against all three reference products, with 95\,\%
+bootstrap confidence intervals. The HydraProbe-family ERA5-Land CI does
+not overlap the Decagon/METER TDR CI, and the family swing
+($0.17$~m$^3$\,m$^{-3}$) is an order of magnitude larger than the
+within-family disagreement among references.
+
+\begin{table}[h!]
+\centering
+\caption{ISMN 2020–2023 composition and mean ISMN$-$reference residual
+(m$^3$\,m$^{-3}$) by manufacturer family, 95\,\% bootstrap CI (5{,}000
+resamples). Residual means use the valid-coverage matchup set; the
+composition count and the ERA5 residual count differ because not every
+station-sensor has valid coverage in every product (e.g., 1{,}231 of
+1{,}274 HydraProbe-family sensors have valid ERA5-Land coverage).}
+\label{tab:S1}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+Sensor family & $n$ & Share (\%) & ERA5-Land & SMAP~L3\_E & SMAP-SMI\\
+\midrule
+HydraProbe family & 1{,}274 & 78.4 & $-0.097$ $[-0.103,-0.091]$ & $-0.025$ $[-0.035,-0.016]$ & $-0.037$ $[-0.043,-0.032]$\\
+Decagon/METER TDR &   95 &  5.8 & $+0.068$ $[+0.028,+0.109]$ & $+0.006$ $[-0.041,+0.057]$ & $-0.074$ $[-0.103,-0.042]$\\
+Campbell CS6xx    &   65 &  4.0 & $-0.065$ $[-0.088,-0.042]$ & $+0.019$ $[-0.001,+0.039]$ & $-0.024$ $[-0.050,+0.005]$\\
+ThetaProbe        &   59 &  3.6 & $-0.039$ $[-0.061,-0.017]$ & $+0.001$ $[-0.025,+0.027]$ & $-0.001$ $[-0.028,+0.025]$\\
+TRIME             &    2 &  0.1 & — & — & —\\
+other             &  130 &  8.0 & $-0.056$ $[-0.079,-0.031]$ & $+0.003$ $[-0.026,+0.033]$ & $-0.022$ $[-0.046,+0.002]$\\
+\midrule
+Total             & 1{,}625 & 100.0 & & & \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\section{Per-archive dielectric-free CRNS attribution}
+The pooled cross-check reported in the main text (92
+CRNS$\leftrightarrow$ISMN pairs, Welch's $t=+4.07$,
+$p=2.3\times10^{-4}$) decomposes by archive as follows.
+\emph{COSMOS-USA} (reprocessed CRNS$-$ERA5-Land bias table of Zheng
+et al.~\cite{ZhengHESS2024}, matched within $0.2^\circ$, $n=56$):
+HydraProbe
+$+0.142$~m$^3$\,m$^{-3}$ $[+0.114,+0.170]$ vs non-HydraProbe $-0.067$
+$[-0.174,+0.037]$; Welch's $t=+3.61$, $p=1.4\times10^{-3}$.
+\emph{COSMOS-Europe}~\cite{BogenaCOSMOSEurope2022} (matched within
+$0.1^\circ$, $n=31$): HydraProbe
+$+0.058$ $[+0.038,+0.078]$ vs non-HydraProbe $+0.010$ $[-0.016,+0.040]$;
+$t=+2.60$, $p=0.019$. \emph{COSMOS-UK}~\cite{Cooper2021COSMOSUK}
+on-site CRNS$-$TDT (same-footprint dielectric probe, $n=49$):
+$+0.035$ $[+0.010,+0.061]$, excluded from the pooled within-archive
+family contrast because its design has no non-HydraProbe channel.
+\emph{CosmOz Australia}~\cite{Hawdon2014CosmOz} ($n=5$):
+CRNS$-$HydraProbe $+0.162$ ($n=2$), CRNS$-$Campbell CS6xx $-0.043$
+($n=3$)—directionally consistent but too small for an independent
+test. Leave-one-archive deletion: dropping USA gives $t=+3.91$,
+$p=6.3\times10^{-4}$; dropping Europe $t=+4.05$, $p=3.7\times10^{-4}$;
+dropping Australia $t=+3.68$, $p=7.8\times10^{-4}$. Figure~\ref{fig:S1}
+summarizes the archive-level contrasts.
+
+The COSMOS-USA row is a synthesized residual: the Zheng et al.
+CRNS$-$ERA5-Land bias is differenced against the station-matched
+ISMN$-$ERA5-Land residual from this work. The two ERA5-Land overlays are
+not redistributed as common-cell grids in this compact review package,
+so the USA row should be interpreted as a supporting rather than
+sole-identifying contrast. The USA-excluded leave-one-archive result
+above is therefore the conservative check used in the main text.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\textwidth]{phase2_combined_attribution.png}
+\caption{Per-archive dielectric-free CRNS attribution. Each row is the
+mean (CRNS $-$ dielectric probe) residual for one archive-family
+comparison; error bars are 95\,\% bootstrap CI. The neutron reference
+is systematically wetter than the HydraProbe family and closer to
+non-HydraProbe families across three continents; Australia is shown for
+direction only.}
+\label{fig:S1}
+\end{figure}
+
+\section{Near-surface constraint for the paired-sensor test}
+The main-text paired test uses $n=21$ stations that host both a
+HydraProbe-family and a non-HydraProbe sensor in the same ISMN grid
+cell; both members are in the retained near-surface layer
+(depth-from $\le0.15$~m). Table~\ref{tab:S2} reports the paired
+family contrast used in the main text. The inference is therefore
+restricted to co-located near-surface pairs.
+
+\begin{table}[h!]
+\centering
+\caption{Paired-sensor offset (non-HydraProbe $-$ HydraProbe) for
+co-located near-surface pairs.}
+\label{tab:S2}
+\small
+\resizebox{0.82\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Pair subset & pairs & mean diff (m$^3$m$^{-3}$) & $t$ & $p$\\
+\midrule
+All co-located pairs & 21 & $+0.075$ $[+0.031,+0.119]$ & $+3.19$ & $4.7\times10^{-3}$\\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\section{Real 2021 SMAP temporal validation check}
+The main letter focuses on mean-state bias and RMSD. To connect the
+family-composition result to standard satellite calibration/validation
+language, we also computed a real overpass-matched daily matchup for
+2021 using raw ISMN \texttt{.stm} hourly files and SMAP L3 SM\_P
+descending/AM granules. The filters were ISMN quality flag "G",
+depth-from $\le0.15$~m, recommended-quality SMAP retrievals, and at
+least 20 matched days per station-sensor. The resulting table contains
+785 station-sensors and 78{,}600 matched station-days.
+
+\begin{table}[h!]
+\centering
+\caption{Real 2021 overpass-matched temporal metrics by manufacturer
+family against SMAP L3 SM\_P (AM). Bias is ISMN minus SMAP; values are
+station-sensor medians; brackets give 95\,\% network-cluster bootstrap
+CI. ThetaProbe ($n=3$) is shown for completeness only.}
+\label{tab:S3}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+Family & Stations & Bias & ubRMSE & $R$ & Anomaly $R$\\
+\midrule
+HydraProbe & 637 & $-0.032$ $[-0.099,-0.017]$ & $0.062$ $[0.051,0.074]$ & $0.317$ $[0.150,0.443]$ & $0.329$ $[0.088,0.465]$\\
+Campbell CS6xx & 58 & $-0.107$ $[-0.151,+0.099]$ & $0.058$ $[0.032,0.064]$ & $0.166$ $[0.087,0.622]$ & $0.140$ $[-0.036,0.657]$\\
+Decagon/METER TDR & 57 & $+0.058$ $[+0.031,+0.139]$ & $0.048$ $[0.028,0.068]$ & $0.622$ $[0.441,0.647]$ & $0.423$ $[0.264,0.635]$\\
+other & 30 & $-0.071$ $[-0.085,-0.033]$ & $0.078$ $[0.056,0.080]$ & $0.055$ $[0.001,0.436]$ & $0.059$ $[-0.016,0.283]$\\
+ThetaProbe & 3 & $+0.195$ & $0.030$ & $0.639$ & $0.608$\\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{family_temporal_real2021.png}
+\caption{Real 2021 overpass-matched SMAP L3 SM\_P (AM) temporal
+validation by sensor family. Bars are family medians and error bars are
+network-cluster 95\,\% CI.}
+\label{fig:S2}
+\end{figure}
+
+The HydraProbe-versus-non-HydraProbe contrast is
+$-0.032$ versus $-0.036$~m$^3$\,m$^{-3}$ for bias
+($p=9.8\times10^{-3}$), $0.062$ versus
+$0.057$~m$^3$\,m$^{-3}$ for ubRMSE ($p=8.2\times10^{-4}$),
+$0.317$ versus $0.273$ for $R$ ($p=0.70$), and $0.329$ versus $0.179$
+for anomaly $R$ ($p=0.055$). Because this check uses the 36-km SMAP
+SM\_P product, one year, AM overpasses only, and point-to-grid matchups,
+it is interpreted as a standard-metric diagnostic rather than as a
+replacement for the mean-state SPL3SMP\_E result in the main text.
+The pooled non-HydraProbe bias masks family heterogeneity:
+Decagon/METER TDR is wetter than HydraProbe ($+0.058$ versus
+$-0.032$~m$^3$\,m$^{-3}$), whereas Campbell CS6xx and other records are
+drier ($-0.107$ and $-0.071$~m$^3$\,m$^{-3}$).
+
+\section{Temporal-window invariance}
+Because SMAP~L3\_E was extracted for 2023 only while ERA5-Land and
+SMAP-SMI span 2020–2023, we recomputed the ERA5-Land swvl1 (0–7~cm)
+grand mean for (i)~the full 2020–2023 window and (ii)~2023 only, using
+an identical $0.1^\circ$ nearest-neighbour protocol. The HydraProbe-family
+mean residual changes by $0.004$~m$^3$\,m$^{-3}$ ($3.9\,\%$) between the
+two windows; all five families change by $\le0.012$~m$^3$\,m$^{-3}$; and
+the driest$\rightarrow$wettest family ranking (HydraProbe $\rightarrow$
+Decagon/METER $\rightarrow$ other $\rightarrow$ ThetaProbe $\rightarrow$
+Campbell~CS6xx) is identical in both windows. The reported family
+ordering is therefore not an artifact of the ERA5 2020–2023 versus
+SMAP~L3\_E 2023-only window choice.
+
+\section{Soil-texture control}
+Soil organic carbon (SOC; g\,kg$^{-1}$) was log-transformed before
+regression. A single ordinary-least-squares regression of the pooled
+three-reference mean residual on $\log_{10}$(SOC) gives a slope of
+$-0.078$~m$^3$\,m$^{-3}$ per decade ($p=1.7\times10^{-8}$, $n=786$).
+At face value this reads as an organic-matter effect, but it is not
+robust to texture control. In a linear mixed-effects model with a
+random intercept for ISMN network and fixed-effect covariates for
+SoilGrids~2.0~\cite{Poggio2021} clay fraction and bulk density, sensor
+depth-from, and $|\text{latitude}|$, implemented with
+Statsmodels~\cite{Seabold2010}, the $\log_{10}$(SOC) coefficient
+collapses in all three references (ERA5-Land $-0.029$, $p=0.11$;
+SMAP~L3\_E $-0.009$, $p=0.77$; SMAP-SMI $+0.030$, $p=0.08$), while
+the clay coefficient is highly significant in every reference
+($p<10^{-9}$). A leave-one-network jackknife of the OLS slope stays
+negative across all networks ($-0.074\pm0.011$; range $-0.096$ to
+$-0.034$). The apparent organic-matter dependence is thus confounded
+with clay fraction and with HydraProbe deployment geography, consistent
+with a
+sensor-family/texture confounder rather than a direct organic-matter
+effect; the sensor-family ordering itself is unchanged by these
+controls.
+
+\begin{thebibliography}{9}
+\bibitem{ZhengHESS2024} Y.~Zheng \emph{et al.}, "Evaluation of
+reanalysis soil moisture products using cosmic ray neutron sensor
+observations across the globe," \emph{Hydrol. Earth Syst. Sci.},
+vol.~28, pp.~1999–2022, 2024, doi:10.5194/hess-28-1999-2024.
+\bibitem{BogenaCOSMOSEurope2022} H.~R.~Bogena \emph{et al.},
+"COSMOS-Europe: a European network of cosmic-ray neutron soil moisture
+sensors," \emph{Earth Syst. Sci. Data}, vol.~14, pp.~1125–1151, 2022,
+doi:10.5194/essd-14-1125-2022.
+\bibitem{Cooper2021COSMOSUK} H.~M.~Cooper \emph{et al.}, "Soil
+moisture estimates from the UK COSMOS-UK network," \emph{Earth Syst.
+Sci. Data}, vol.~13, pp.~1737–1757, 2021,
+doi:10.5194/essd-13-1737-2021.
+\bibitem{Hawdon2014CosmOz} A.~Hawdon, D.~McJannet, and J.~Wallace,
+"Calibration and correction procedures for cosmic-ray neutron soil
+moisture probes across Australia," \emph{Water Resour. Res.}, vol.~50,
+pp.~5029–5043, 2014, doi:10.1002/2013WR015138.
+\bibitem{Poggio2021} L.~Poggio \emph{et al.}, "SoilGrids 2.0:
+producing soil information for the globe with quantified spatial
+uncertainty," \emph{SOIL}, vol.~7, pp.~217–240, 2021,
+doi:10.5194/soil-7-217-2021.
+\bibitem{Seabold2010} S.~Seabold and J.~Perktold, "Statsmodels:
+econometric and statistical modeling with Python," in \emph{Proc. 9th
+Python in Science Conf.}, 2010.
+\end{thebibliography}
+
+\end{document}

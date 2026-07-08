@@ -1,0 +1,3 @@
+test,n_pairs,effect_nonhydraprobe_minus_hydraprobe_m3m3,t_statistic,p_value,ci_low_m3m3,ci_high_m3m3,scope
+co_located_same_grid_cell,21,0.075,3.19,0.0047,0.031,0.119,near-surface ISMN pairs holding location/climate/season/soil approximately fixed
+

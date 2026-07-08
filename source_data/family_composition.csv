@@ -1,0 +1,9 @@
+family,n_station_sensors,share_percent,notes
+HydraProbe_family,1274,78.4,Stevens HydraProbe family and matching model strings
+Decagon_METER_TDR,95,5.8,Decagon/METER TDR family
+Campbell_CS6xx,65,4.0,Campbell CS6xx family
+ThetaProbe,59,3.6,ThetaProbe family
+TRIME,2,0.1,TRIME family
+other,130,8.0,Other or ungrouped sensor-family strings
+total,1625,100.0,Retained 2020-2023 near-surface ISMN station-sensors
+

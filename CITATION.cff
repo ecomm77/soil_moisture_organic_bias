@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this pre-archive review package, cite the title and version; add the Zenodo DOI after public activation."
+title: "GRSL sensor-family validation code package"
+version: "v20260708"
+date-released: "2026-07-08"
+repository-code: "https://github.com/ecomm77/soil_moisture_organic_bias"
+authors:
+  - family-names: "Park"
+    given-names: "Chang-Hwan"
+    email: "cpark@ajou.ac.kr"
+keywords:
+  - "soil moisture"
+  - "ISMN"
+  - "SMAP"
+  - "ERA5-Land"
+  - "sensor-family bias"
+  - "validation"
