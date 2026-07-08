@@ -9,6 +9,7 @@ repository-code: "https://github.com/ecomm77/soil_moisture_organic_bias"
 authors:
   - family-names: "Park"
     given-names: "Chang-Hwan"
+    affiliation: "Department of Civil Systems Engineering, Ajou University; Department of Civil Systems Engineering, Ajou University in Tashkent"
     email: "cpark@ajou.ac.kr"
 keywords:
   - "soil moisture"
