@@ -7,7 +7,7 @@ Use this checklist immediately before GRSL submission.
 - GitHub repository: https://github.com/ecomm77/soil_moisture_organic_bias
 - GitHub release: https://github.com/ecomm77/soil_moisture_organic_bias/releases/tag/v20260708
 - Release asset: `paper2_GRSL_code_package_20260708.zip`
-- Release asset SHA256: `ff0210786277ff77707bbcbe092e277e7fc1735bab1fa243ed38d0eda47a34d8`
+- Release asset SHA256: see the GitHub release notes after the final zip is generated.
 
 ## Publish the Zenodo record
 
