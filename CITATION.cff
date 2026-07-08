@@ -1,8 +1,10 @@
 cff-version: 1.2.0
-message: "If you use this pre-archive review package, cite the title and version; add the Zenodo DOI after public activation."
+message: "If you use this package, cite it using the metadata in this file."
 title: "GRSL sensor-family validation code package"
 version: "v20260708"
 date-released: "2026-07-08"
+doi: "10.5281/zenodo.21263063"
+url: "https://doi.org/10.5281/zenodo.21263063"
 repository-code: "https://github.com/ecomm77/soil_moisture_organic_bias"
 authors:
   - family-names: "Park"

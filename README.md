@@ -57,14 +57,14 @@ The legacy scripts under `scripts/legacy_project_scripts/` are preserved from th
 
 ## Citation
 
-Public archive status:
+Public archive:
 
-As of July 8, 2026, the planned DOI `10.5281/zenodo.21263063` did not resolve publicly. The public GitHub mirror for this review package is:
+Zenodo DOI: https://doi.org/10.5281/zenodo.21263063
+
+Public GitHub mirror:
 
 https://github.com/ecomm77/soil_moisture_organic_bias
 
-Activate the Zenodo record before final submission, then update this section and `CITATION.cff` with the final DOI.
+Package citation:
 
-Interim package citation:
-
-Park, C.-H. (2026). GRSL sensor-family validation code package, v20260708. Local review package.
+Park, C.-H. (2026). GRSL sensor-family validation code package, v20260708. Zenodo. https://doi.org/10.5281/zenodo.21263063
